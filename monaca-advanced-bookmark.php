@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: MonacaAdvancedBookmark
-Plugin URI: http://press.monaca.mobi/
+Plugin URI: https://github.com/j801/advanced-bookmark-plugin
 Description: The MonacaAdvancedBookmark Plugin is generator smart devices application's source code. It can make simple app like bookmark.
 Version: 1.0
 Author: YUKI OKAMOTO (HN:Justice)
-Author URI: http://j801.com
+Author URI: http://press.monaca.mobi/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -30,7 +30,7 @@ function monaca_advanced_bookmark_admin_menu()
     'monaca_advanced_bookmark_generator'
   );
 }
-//
+
 function monaca_advanced_bookmark_generator () 
 {
   // load config.json to array
@@ -45,7 +45,6 @@ function monaca_advanced_bookmark_generator ()
   } else {
     $stations_number += $stations_number_default;
   }
-
 
   // generate json file
   if (isset($_POST['submit'])) {
@@ -64,10 +63,12 @@ function monaca_advanced_bookmark_generator ()
     }
 
     $json = json_encode($config);
+
+    // set newlines
     $json = str_replace(array(','), ",\n", $json);
 
+    // write config.json and update zip file
     file_put_contents(__dir__ . '/config.json', $json);
-
     monaca_update_project(__dir__ ."/project.zip", __dir__ ."/config.json");
   }
 
@@ -75,6 +76,7 @@ function monaca_advanced_bookmark_generator ()
   include 'form.php';
 }
 
+// update zipfile's config.json
 function monaca_update_project($zip_file = "project.zip", $json_file = "config.json")
 {
   $zip = new ZipArchive();
@@ -88,6 +90,4 @@ function monaca_update_project($zip_file = "project.zip", $json_file = "config.j
 
   $zip->close();
 }
-
-
 ?>
